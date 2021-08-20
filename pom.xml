@@ -17,6 +17,7 @@
     <properties>
         <java.version>16</java.version>
         <spring-cloud.version>2020.0.3</spring-cloud.version>
+
     </properties>
     <dependencies>
         <dependency>
@@ -71,10 +72,36 @@
                             <port>15370</port>
                         </ports>
                     </container>
+
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>1.4.0</version>
+                <configuration>
+                    <repository>iesdam/${project.artifactId}</repository>
+                    <tag>${project.version}</tag>
+                    <buildArgs>
+                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>push</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
+        <finalName>spring-boot-docker-maven</finalName>
     </build>
 
 
 </project>
+
